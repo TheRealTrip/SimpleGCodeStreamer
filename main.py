@@ -1,11 +1,28 @@
 import tkinter as tk
 import serial, time, os
-
-device = "/dev/ttyUSB0" # Dynamic, ensure this is up to date, eg - (/dev/tty/USB0 /dev/tty/ACM0)
-baudRate = 115200
-movePrefix = "G0" 
-demoMode = False
+from functools import partial
 absolute_positioning = False
+
+
+if not os.path.exists('presets'): # Ensure presets folder exists
+   os.makedirs('presets')
+
+
+file = open('./config.txt', 'r')
+lines = file.readlines()
+for line in lines:
+    parameterName = line.split(':')[0]
+    parameter = line.split(':')[1].strip(' ').strip('\n')
+    match parameterName:
+        case 'device':
+            device = parameter
+        case 'baudRate':
+            baudRate = int(parameter)
+        case 'movePrefix':
+            movePrefix = parameter
+        case 'demoMode':
+            demoMode = bool(parameter)
+file.close()
 
 
 class serialDevice():
@@ -13,23 +30,14 @@ class serialDevice():
         self.device = device
         self.baudRate = baudRate
         if not demoMode:
-            self.sercon = serial.Serial()
+            self.sercon = serial.Serial() # I don't actually use this connection to send data as it dosen't work? I use os.system instead. I don't know if it's still necessary to let the control computer I want to write to it.
             self.sercon.port = device
             self.sercon.baudrate = baudRate
-            self.sercon.setDTR(1)
-            print(self.sercon)
-            self.sercon.open()
-            self.sercon.setDTR(0)
-            time.sleep(0.5)
-            self.sercon.setDTR(1)
         else:
             print("Demo Mode is active, not establishing a connection.")
     def sendSerialCommand(self, command):
         if not demoMode:
-            #self.sercon.write(command.encode())
             os.system(f'echo {command} >> {device}')
-            #self.fixIt()
-            #self.sercon.write(command.encode())
             print(f"Sending {command}")
         else:
             print(f"Sending {command}")
@@ -47,11 +55,9 @@ class serialDevice():
                 self.sendSerialCommand(f"{movePrefix}X{step}")
             case 'right':
                 self.sendSerialCommand(f"{movePrefix}X{-step}")
-    def goTo(self):
+    def goTo(self, x, y):
         if not absolute_positioning:
             self.toggle_positioning()
-        x = int(xCoordBox.get("1.0", "end-1c"))
-        y = int(yCoordBox.get("1.0", "end-1c"))
         self.sendSerialCommand(f"G90X{-x}Y{y}")
     def toggle_positioning(self):
         global absolute_positioning
@@ -61,18 +67,7 @@ class serialDevice():
         self.sendSerialCommand(mode)
         print(f"Positioning mode: {'Absolute' if absolute_positioning else 'Relative'}")
     def goHome(self):
-        #self.sendSerialCommand('G0 X0 Y0')
         self.sendSerialCommand('G28')
-    def goToPreset(self, preset):
-        self.sendSerialCommand(f"G3X{preset.x}Y{preset.y}")
-
-class gCodeCommand():
-    def __init__(self, command):
-        self.command = command
-    def saveToFile(name):
-        with open(name, 'w') as file:
-            file.write(self.command)
-            file.close()
 
 def loadGCodeFromFile(name):
     with open(name, 'r') as file:
@@ -81,11 +76,30 @@ def loadGCodeFromFile(name):
     return gCodeCommand(command)
 
 class preset():
-    def __init__(self, x, y):
+    def __init__(self, x, y, name):
         self.x = x
         self.y = y
+        self.name = name
+    def goToPreset(self, connection):
+        connection.goTo(self.x, self.y)
+    def saveToFile(self, name):
+        with open(name, 'w') as file:
+            file.write(f"{self.x}\n{self.y}")
+            file.close()
 
+def presetFromFile(name):
+    with open(f"./presets/{name}", 'r') as file:
+        lines = file.readlines()
+        x = int(lines[0])
+        y = int(lines[1])
+        file.close()
+    return preset(x, y, name)
 
+# Searching for presets and storing in memory
+presets = []
+for file in os.listdir('presets'):
+    Preset = presetFromFile(os.fsdecode(file))
+    presets.append(Preset)
 
 connection = serialDevice(device, baudRate) # Establish serial connection
 
@@ -112,7 +126,7 @@ xCoordBox = tk.Text(root, width=3, height=1)
 yCoordBox = tk.Text(root, width=3, height=1)
 xCoordLabel = tk.Label(root, text="X-Coord")
 yCoordLabel = tk.Label(root, text="Y-Coord")
-goToButton = tk.Button(root, text="Go To", command=lambda: connection.goTo())
+goToButton = tk.Button(root, text="Go To", command=lambda: connection.goTo(int(xCoordBox.get("1.0", "end-1c")), y = int(yCoordBox.get("1.0", "end-1c"))))
 
 #Home Button
 homeButton = tk.Button(root, text="Home", command=lambda: connection.goHome())
@@ -123,14 +137,29 @@ btn_up.grid(row=0, column=1, pady=10)
 btn_left.grid(row=1, column=0, padx=10)
 btn_right.grid(row=1, column=2, padx=10)
 btn_down.grid(row=2, column=1, pady=10)
+homeButton.grid(row=1, column=1, pady=10)
+
 btn_toggle.grid(row=3, column=1, pady=10)
+
 stepBox.grid(row=5, column=1, pady=10)
 stepLabel.grid(row=4, column=1, pady=10)
+
 xCoordBox.grid(row=7, column=0, pady=10)
 yCoordBox.grid(row=7, column=1, pady=10)
 xCoordLabel.grid(row=6, column=0, pady=10)
 yCoordLabel.grid(row=6, column=1, pady=10)
+
 goToButton.grid(row=7, column=2, pady=10)
-homeButton.grid(row=1, column=1, pady=10)
+
+
+
+
+for i, preset in enumerate(presets):
+    button = tk.Button(root, text=preset.name, command=lambda p=preset: p.goToPreset(connection))
+    button.grid(row=i, column=10, pady=5)
+
+
+
 # Start the main event loop
 root.mainloop()
+
