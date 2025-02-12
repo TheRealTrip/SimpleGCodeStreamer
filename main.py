@@ -3,6 +3,10 @@ import serial, time, os
 from functools import partial
 absolute_positioning = False
 
+horribleDict = {
+    "True": True,
+    "False": False
+}
 
 if not os.path.exists('presets'): # Ensure presets folder exists
    os.makedirs('presets')
@@ -21,7 +25,7 @@ for line in lines:
         case 'movePrefix':
             movePrefix = parameter
         case 'demoMode':
-            demoMode = bool(parameter)
+            demoMode = horribleDict[parameter]
 file.close()
 
 
@@ -105,7 +109,7 @@ connection = serialDevice(device, baudRate) # Establish serial connection
 
 root = tk.Tk()
 root.title("Laser Controller")
-root.geometry("500x500")
+root.geometry("750x750")
 
 # Create buttons and associate them with the move function
 btn_up = tk.Button(root, text="Up", command=lambda: connection.move("up") )
