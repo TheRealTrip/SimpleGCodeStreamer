@@ -27,9 +27,11 @@ for line in lines:
             dimensions = str(parameter)
 file.close()
 UI = None
-connection = serialDevice(device, baudRate, demoMode, movePrefix, UI) # Establish serial connection
+connection = serialDevice(device, baudRate, demoMode, movePrefix) # Establish serial connection
 presets = findPresets()
 UI = mainUI(dimensions, presets, connection)
 
+def getUI():
+    return UI
 
 
