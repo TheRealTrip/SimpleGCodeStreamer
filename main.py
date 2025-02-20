@@ -26,12 +26,12 @@ for line in lines:
         case 'windowDimensions':
             dimensions = str(parameter)
 file.close()
-UI = None
-connection = serialDevice(device, baudRate, demoMode, movePrefix) # Establish serial connection
+
+
 presets = findPresets()
+
+connection = serialDevice(device, baudRate, demoMode, movePrefix) # Establish serial connection
 UI = mainUI(dimensions, presets, connection)
 
-def getUI():
-    return UI
 
 

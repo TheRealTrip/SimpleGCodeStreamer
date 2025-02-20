@@ -10,12 +10,13 @@ class mainUI():
         self.root.title("Laser Controller")
         self.root.geometry(dimensions)
         self.connection = connection
+        connection.ui = self
 
         # Create buttons and associate them with the move function
-        btn_up = tk.Button(self.root, text="Up", command=lambda: connection.move("up", step))
-        btn_down = tk.Button(self.root, text="Down", command=lambda: connection.move("down", step) )
-        btn_left = tk.Button(self.root, text="Left", command=lambda: connection.move("left", step) )
-        btn_right = tk.Button(self.root, text="Right", command=lambda: connection.move("right", step) )
+        btn_up = tk.Button(self.root, text="Up", command=lambda: self.connection.move("up", step))
+        btn_down = tk.Button(self.root, text="Down", command=lambda: self.connection.move("down", step) )
+        btn_left = tk.Button(self.root, text="Left", command=lambda: self.connection.move("left", step) )
+        btn_right = tk.Button(self.root, text="Right", command=lambda: self.connection.move("right", step) )
 
 
         #Getting the step distance for relative motion
@@ -28,10 +29,10 @@ class mainUI():
         yCoordBox = tk.Text(self.root, width=3, height=1)
         xCoordLabel = tk.Label(self.root, text="X-Coord")
         yCoordLabel = tk.Label(self.root, text="Y-Coord")
-        goToButton = tk.Button(self.root, text="Go To", command=lambda: connection.goTo(int(xCoordBox.get("1.0", "end-1c")), y = int(yCoordBox.get("1.0", "end-1c"))))
+        goToButton = tk.Button(self.root, text="Go To", command=lambda: self.connection.goTo(int(xCoordBox.get("1.0", "end-1c")), y = int(yCoordBox.get("1.0", "end-1c"))))
 
         #Home Button
-        homeButton = tk.Button(self.root, text="Home", command=lambda: connection.goHome())
+        homeButton = tk.Button(self.root, text="Home", command=lambda: self.connection.goHome())
 
 
         # Arrange the buttons in a grid
