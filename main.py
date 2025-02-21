@@ -25,12 +25,19 @@ for line in lines:
             demoMode = horribleDict[parameter]
         case 'windowDimensions':
             dimensions = str(parameter)
+        case 'inverseX':
+            inverseX = horribleDict[parameter]
+        case 'usePySerial':
+            usePySerial = horribleDict[parameter]
+        case 'inverseY':
+            inverseY = horribleDict[parameter]
+
 file.close()
 
 
 presets = findPresets()
 
-connection = serialDevice(device, baudRate, demoMode, movePrefix) # Establish serial connection
+connection = serialDevice(device, baudRate, demoMode, movePrefix, inverseX, inverseY, usePySerial) # Establish serial connection
 UI = mainUI(dimensions, presets, connection)
 
 

@@ -3,3 +3,6 @@ device: /dev/ttyUSB0
 movePrefix: G0
 demoMode: False
 windowDimensions: 750x750
+inverseX: False
+inverseY: False
+usePySerial: False

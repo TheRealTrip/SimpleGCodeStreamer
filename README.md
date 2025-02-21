@@ -2,9 +2,8 @@
 
 ## Who is this for?
 It is mostly for me but I can't see why it couldn't be adapted to your use-case. 
-One thing to keep in mind is that left and rights are swapped from standard GCode due to my hardware, however I will be adding this to the config soon.
-In it's current state it only functions for Linux machines due to how it sends serial commands. However it could easily be adapted for other platforms.
-
+I believe the pyserial write is broken but you are welcome to try on your OS, there is another implementation as default which works nicely on linux.
+Despite this, pyserial still establishes a connection no matter what.
 ## Usage
 Pull the repo down and then run
 `python -m pip install -r requirements.txt`
