@@ -47,9 +47,9 @@ class serialDevice():
     def goTo(self, x, y):
         if not grabPositionState():
             self.ui.togglePositioning()
-        if inverseX:
+        if self.inverseX:
             x = -x
-        if inverseY:
+        if self.inverseY:
             y = -y
         self.sendSerialCommand(f"G90X{x}Y{y}")
     def goHome(self):
