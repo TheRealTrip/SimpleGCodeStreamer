@@ -3,7 +3,7 @@ from controllers.uiController import mainUI
 from controllers.serialController import serialDevice
 
 
-horribleDict = { # python i don't like you
+boolDict = { # python i don't like you
     "True": True,
     "False": False
 }
@@ -22,15 +22,15 @@ for line in lines:
         case 'movePrefix':
             movePrefix = parameter
         case 'demoMode':
-            demoMode = horribleDict[parameter]
+            demoMode = boolDict[parameter]
         case 'windowDimensions':
             dimensions = str(parameter)
         case 'inverseX':
-            inverseX = horribleDict[parameter]
+            inverseX = boolDict[parameter]
         case 'usePySerial':
-            usePySerial = horribleDict[parameter]
+            usePySerial = boolDict[parameter]
         case 'inverseY':
-            inverseY = horribleDict[parameter]
+            inverseY = boolDict[parameter]
 
 file.close()
 
