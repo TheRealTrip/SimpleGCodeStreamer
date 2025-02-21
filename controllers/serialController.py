@@ -1,4 +1,4 @@
-import serial
+import serial, os
 from controllers.uiController import grabPositionState
 
 
@@ -21,7 +21,7 @@ class serialDevice():
     def sendSerialCommand(self, command):
         if not self.demoMode:
             if not self.usePySerial:
-                os.system(f'echo {command} >> {device}')
+                os.system(f'echo {command} >> {self.device}')
                 print(f"Sending {command}")
             else:
                 self.sercon.write(command)
