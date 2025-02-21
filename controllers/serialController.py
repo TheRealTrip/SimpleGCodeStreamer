@@ -1,6 +1,6 @@
 import serial
 from functools import partial
-from mainUI import grabPositionState
+from controllers.uiController import grabPositionState
 
 class serialDevice():
     def __init__(self, device, baudRate, demoMode, movePrefix):

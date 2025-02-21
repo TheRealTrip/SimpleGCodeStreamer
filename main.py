@@ -1,5 +1,5 @@
 from controllers.presetController import findPresets
-from mainUI import mainUI
+from controllers.uiController import mainUI
 from controllers.serialController import serialDevice
 
 
