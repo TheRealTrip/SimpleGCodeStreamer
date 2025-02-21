@@ -1,5 +1,4 @@
 import serial
-from functools import partial
 from controllers.uiController import grabPositionState
 
 class serialDevice():
