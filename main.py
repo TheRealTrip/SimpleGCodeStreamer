@@ -6,7 +6,7 @@ from tomllib import load
 
 #Load config
 config = open('./config.toml', 'rb') # Open as binary format for tomllib
-config = load(config) #absolutePositioning
+config = load(config)
 
 #Start main routines
 presets = findPresets()

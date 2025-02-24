@@ -27,7 +27,6 @@ class serialDevice():
                 self.sercon.write(command)
         else:
             print(f"Sending {command}")
-
     def move(self, direction, step):
         self.ui.setPositioning('relative')
         if self.inverseX and (direction == "left" or direction == "right"):
