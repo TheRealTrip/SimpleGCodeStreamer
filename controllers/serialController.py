@@ -1,16 +1,16 @@
 import serial, os
-from controllers.uiController import grabPositionState
 
 
 class serialDevice():
-    def __init__(self, device, baudRate, demoMode, movePrefix, inverseX, inverseY, usePySerial):
-        self.device = device
-        self.baudRate = baudRate
-        self.demoMode = demoMode
-        self.movePrefix = movePrefix
-        self.inverseX = inverseX
-        self.inverseY = inverseY
-        self.usePySerial = usePySerial
+    def __init__(self, config):
+        self.config = config
+        self.device = config['device']
+        self.baudRate = config['baudRate']
+        self.demoMode = config['demoMode']
+        self.movePrefix = config['movePrefix']
+        self.inverseX = config['inverseX']
+        self.inverseY = config['inverseY']
+        self.usePySerial = config['usePySerial']
         self.ui = None
         if not self.demoMode:
             self.sercon = serial.Serial()
@@ -29,8 +29,7 @@ class serialDevice():
             print(f"Sending {command}")
 
     def move(self, direction, step):
-        if grabPositionState():
-            self.ui.togglePositioning()
+        self.ui.setPositioning('relative')
         if self.inverseX and (direction == "left" or direction == "right"):
             step = -step
         if self.inverseY and (direction == "up" or direction == "down"):
@@ -45,8 +44,7 @@ class serialDevice():
             case 'right':
                     self.sendSerialCommand(f"{self.movePrefix}X{step}")
     def goTo(self, x, y):
-        if not grabPositionState():
-            self.ui.togglePositioning()
+        self.ui.setPositioning('absolute')
         if self.inverseX:
             x = -x
         if self.inverseY:

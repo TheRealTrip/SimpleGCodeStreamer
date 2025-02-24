@@ -1,16 +1,19 @@
 import tkinter as tk
-absolute_positioning = False
 
-def grabPositionState():
-    return absolute_positioning
 
 class mainUI():
-    def __init__(self, dimensions, presets, connection):
+    def __init__(self, config, presets, connection):
+        self.config = config
         self.root = tk.Tk()
         self.root.title("Laser Controller")
-        self.root.geometry(dimensions)
+        self.root.geometry(config['windowDimensions'])
         self.connection = connection
-        connection.ui = self
+        connection.ui = self # Fixes circular import
+
+        if self.config['defaultPositioning'] == 'relative':
+            self.absolute_positioning = False
+        else:
+            self.absolute_positioning = True
 
         # Create buttons and associate them with the move function
         btn_up = tk.Button(self.root, text="Up", command=lambda: self.connection.move("up", step))
@@ -44,8 +47,8 @@ class mainUI():
 
 
         # Button to toggle positioning mode
-        self.positonToggle = tk.Button(self.root, text="Absolute", command=lambda: self.togglePositioning())
-        self.positonToggle.grid(row=3, column=1, pady=10)
+        self.positionToggle = tk.Button(self.root, text="Absolute", command=lambda: self.togglePositioning())
+        self.positionToggle.grid(row=3, column=1, pady=10)
 
         stepBox.grid(row=5, column=1, pady=10)
         stepLabel.grid(row=4, column=1, pady=10)
@@ -67,10 +70,18 @@ class mainUI():
 
         # Start the main event loop
         self.root.mainloop()
-    def togglePositioning(self):
-        global absolute_positioning
-        absolute_positioning = not absolute_positioning
-        self.positonToggle["text"] = "Absolute" if absolute_positioning else "Relative"
-        mode = "G90" if absolute_positioning else "G91"
+    def setPositioning(self, positioning):
+        if positioning == 'relative' and (not self.absolute_positioning):
+            return
+        if positioning == 'absolute' and self.absolute_positioning:
+            return
+        self.absolute_positioning = not self.absolute_positioning
+        self.positionToggle["text"] = "Absolute" if self.absolute_positioning else "Relative"
+        mode = "G90" if self.absolute_positioning else "G91"
         self.connection.sendSerialCommand(mode)
-        print(f"Positioning mode: {'Absolute' if absolute_positioning else 'Relative'}")
+        print(f"Positioning mode: {'Absolute' if self.absolute_positioning else 'Relative'}")
+    def togglePositioning(self):
+        if self.absolute_positioning:
+            self.setPositioning('relative')
+        else:
+            self.setPositioning('absolute')

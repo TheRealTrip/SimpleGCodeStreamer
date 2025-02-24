@@ -8,7 +8,7 @@ Despite this, pyserial still establishes a connection no matter what.
 Pull the repo down and then run
 `python -m pip install -r requirements.txt`
 Then
-`cp example_config.txt config.txt`
+`cp example_config.toml config.toml`
 
 After filling out the config you have the option to make more presets than already provided, this is trivial and just requires you to follow the format. The file name will be what's displayed in the UI, including the extension.
 `

@@ -1,0 +1,9 @@
+baudRate = 115200
+device = "/dev/ttyUSB0"
+movePrefix = "G0"
+demoMode = false
+windowDimensions = "750x750"
+inverseX = false
+inverseY = false
+usePySerial = false
+defaultPositioning = 'absolute'
