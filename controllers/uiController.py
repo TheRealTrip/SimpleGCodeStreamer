@@ -63,7 +63,7 @@ class mainUI():
 
         step = int(stepBox.get("1.0", "end-1c"))
 
-        for i, preset in enumerate(presets):
+        for i, preset in enumerate(presets): # Adding all the presets to the UI
             button = tk.Button(self.root, text=preset.name, command=lambda p=preset: p.goToPreset(connection))
             button.grid(row=i, column=10, pady=5)
 
