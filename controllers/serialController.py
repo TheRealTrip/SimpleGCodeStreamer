@@ -24,6 +24,7 @@ class serialDevice():
                 os.system(f'echo {command} >> {self.device}')
                 print(f"Sending {command}")
             else:
+                command = ('\r' + command + '\r').encode()
                 self.sercon.write(command)
         else:
             print(f"Sending {command}")
