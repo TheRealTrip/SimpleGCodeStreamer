@@ -16,6 +16,7 @@ class serialDevice():
             self.sercon = serial.Serial()
             self.sercon.port = self.device
             self.sercon.baudrate = self.baudRate
+            self.sercon.open()
         else:
             print("Demo Mode is active, not establishing a connection.")
     def sendSerialCommand(self, command):
