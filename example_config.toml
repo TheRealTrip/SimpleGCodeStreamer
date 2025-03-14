@@ -5,5 +5,7 @@ demoMode = false
 windowDimensions = "750x750"
 inverseX = false
 inverseY = false
+offsetX = 0
+offsetY = 0
 usePySerial = true
 defaultPositioning = 'absolute'

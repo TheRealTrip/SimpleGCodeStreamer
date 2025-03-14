@@ -11,6 +11,8 @@ class serialDevice():
         self.inverseX = config['inverseX']
         self.inverseY = config['inverseY']
         self.usePySerial = config['usePySerial']
+        self.offsetX = config['offsetX']
+        self.offsetY = config['offsetY']
         self.ui = None
         if not self.demoMode:
             self.sercon = serial.Serial()
@@ -46,6 +48,8 @@ class serialDevice():
                     self.sendSerialCommand(f"{self.movePrefix}X{step}")
     def goTo(self, x, y):
         self.ui.setPositioning('absolute')
+        x = x + int(self.offsetX)
+        y = y + int(self.offsetY)
         if self.inverseX:
             x = -x
         if self.inverseY:

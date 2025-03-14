@@ -17,5 +17,5 @@ Then simply run main.py
 
 # To Do List
 
-- X and Y Offset in config.toml
+
 - Create a new Laser Object which stores presets for ease of use
