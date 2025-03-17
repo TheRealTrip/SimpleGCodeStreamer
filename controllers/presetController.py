@@ -16,8 +16,8 @@ class preset():
             file.close()
 
 
-def presetFromFile(name):
-    with open(f"./presets/{name}", 'r') as file:
+def presetFromFile(name, laser):
+    with open(f"./presets/{laser}/{name}", 'r') as file:
         lines = file.readlines()
         x = int(lines[0])
         y = int(lines[1])
@@ -25,11 +25,13 @@ def presetFromFile(name):
     return preset(x, y, name)
 
 
-def findPresets():
+def findPresets(laser):
     # Searching for presets and storing in memory
     presets = []
-    for file in os.listdir('presets'):
-        Preset = presetFromFile(os.fsdecode(file))
+    for file in os.listdir(f'./presets/{laser}'):
+        Preset = presetFromFile(os.fsdecode(file), laser)
         presets.append(Preset)
     return presets
+
+
 

@@ -7,6 +7,8 @@ class mainUI():
         self.root = tk.Tk()
         self.root.title("Laser Controller")
         self.root.geometry(config['windowDimensions'])
+        self.usableX = config['usableX']
+        self.usableY = config['usableY']
         self.connection = connection
         connection.ui = self # Fixes circular import
 
@@ -37,6 +39,7 @@ class mainUI():
         #Home Button
         homeButton = tk.Button(self.root, text="Home", command=lambda: self.connection.goHome())
 
+        usableSpace = tk.Label(self.root, text=f"Usable space is {self.usableX}x{self.usableY}")
 
         # Arrange the buttons in a grid
         btn_up.grid(row=0, column=1, pady=10)
@@ -53,12 +56,13 @@ class mainUI():
         stepBox.grid(row=5, column=1, pady=10)
         stepLabel.grid(row=4, column=1, pady=10)
 
-        xCoordBox.grid(row=7, column=0, pady=10)
-        yCoordBox.grid(row=7, column=1, pady=10)
+        xCoordBox.grid(row=8, column=0, pady=10)
+        yCoordBox.grid(row=8, column=1, pady=10)
+        usableSpace.grid(row=7, column=0, pady=10)
         xCoordLabel.grid(row=6, column=0, pady=10)
         yCoordLabel.grid(row=6, column=1, pady=10)
 
-        goToButton.grid(row=7, column=2, pady=10)
+        goToButton.grid(row=8, column=2, pady=10)
 
 
 

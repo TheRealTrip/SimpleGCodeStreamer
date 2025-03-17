@@ -9,7 +9,7 @@ config = open('./config.toml', 'rb') # Open as binary format for tomllib
 config = load(config)
 
 #Start main routines
-presets = findPresets()
+presets = findPresets(config['laserType'])
 connection = serialDevice(config) # Establish serial connection
 UI = mainUI(config, presets, connection)
 
