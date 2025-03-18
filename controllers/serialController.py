@@ -14,6 +14,8 @@ class serialDevice():
         self.offsetX = config['offsetX']
         self.offsetY = config['offsetY']
         self.ui = None
+        self.usableX = config['usableX']
+        self.usableY = config['usableY']
         if not self.demoMode:
             self.sercon = serial.Serial()
             self.sercon.port = self.device
@@ -57,3 +59,15 @@ class serialDevice():
         self.sendSerialCommand(f"G90X{x}Y{y}")
     def goHome(self):
         self.sendSerialCommand('G28')
+    def scanArea(self):
+        xSteps = int(int(self.usableX) / 10)
+        ySteps = int(int(self.usableY) / 10)
+        print(xSteps, ySteps)
+        for ystep in range(0,ySteps):
+            for xstep in range(0,xSteps):
+                if (ystep % 2) > 0:
+                    self.move('left', 10)
+                else:
+                    self.move('right', 10)
+            self.move('up', 10)
+        self.goHome()

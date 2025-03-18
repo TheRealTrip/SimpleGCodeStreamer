@@ -14,4 +14,3 @@ connection = serialDevice(config) # Establish serial connection
 UI = mainUI(config, presets, connection)
 
 
-

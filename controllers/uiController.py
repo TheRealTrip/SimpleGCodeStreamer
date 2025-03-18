@@ -64,7 +64,8 @@ class mainUI():
 
         goToButton.grid(row=8, column=2, pady=10)
 
-
+        scanAreaButton = tk.Button(self.root, text="Start Scan", command=lambda: connection.scanArea())
+        scanAreaButton.grid(row=0, column=4)
 
 
         for i, preset in enumerate(presets): # Adding all the presets to the UI
