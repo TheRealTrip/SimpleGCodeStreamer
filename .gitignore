@@ -2,3 +2,8 @@ config.toml
 __pycache__/
 controllers/__pycache__/
 presets/
+dist/
+dist
+main.spec
+build/
+build
