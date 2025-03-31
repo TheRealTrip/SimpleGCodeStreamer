@@ -8,7 +8,7 @@ It is mostly for me but I can't see why it couldn't be adapted to your use-case.
 Pull the repo down and then run
 `python -m pip install -r requirements.txt`
 
-### From Source
+### From Binary
 Grab a recent release for your OS and run as normal, probably in a CMD window as it can help with troubleshooting.
 
 Then
@@ -22,7 +22,7 @@ X\nY
 ![Graphic to illustrate the file structure](https://cdn.discordapp.com/attachments/955529298654146601/1356353370364842194/graphics.jpg?ex=67ec4203&is=67eaf083&hm=ddf41adadac4d454c0a56aa99280e27303d2939c4a6bfb62746d403ba15bc5d1&)
 
 
-Then simply run main.py
+Then simply run main.py/main.exe
 
 # To Do List
 
